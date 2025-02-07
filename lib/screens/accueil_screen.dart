@@ -57,7 +57,7 @@ class IntroScreenState extends State<IntroScreen> {
                     children: [
                       // Background image with animation
                       Transform.translate(
-                        offset: Offset(pageOffset * -40, 0),
+                        offset: Offset(pageOffset * -20, 0),
                         child: Container(
                           decoration: BoxDecoration(
                             image: DecorationImage(
@@ -98,7 +98,7 @@ class IntroScreenState extends State<IntroScreen> {
 
                             // Title
                             Transform.translate(
-                              offset: Offset(pageOffset * 20, 0),
+                              offset: Offset(pageOffset * -20, 0),
                               child: Opacity(
                                 opacity: (1 - pageOffset.abs()).clamp(0.0, 1.0),
                                 child: Text(

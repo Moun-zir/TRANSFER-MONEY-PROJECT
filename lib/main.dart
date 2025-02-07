@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: IntroScreen(), // Utilisation de HomeScreen
+      initialRoute: '/', //(Page d'entrée , la page principale)
     );
   }
 }
