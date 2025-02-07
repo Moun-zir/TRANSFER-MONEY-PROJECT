@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/balance_card.dart';
 import '../widgets/credit_card.dart';
-import 'package:provider/provider.dart';
 import '../providers/balance_provider.dart';
+import '../providers/transaction_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,12 +17,12 @@ class HomeScreen extends StatelessWidget {
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16),
-            child: Icon(Icons.window, size: 28),
+            child: Icon(Icons.qr_code, size: 28),
           ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(14.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -32,33 +33,38 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            // Utilise Consumer pour écouter les changements de balance
             Consumer<BalanceProvider>(
               builder: (context, balanceProvider, child) {
                 return BalanceCard(balance: balanceProvider.balance);
               },
             ),
             const SizedBox(height: 20),
-            const CreditCard(
-              cardTitle: "Primary Card",
-              cardNumber: "**** **** **** 1234",
-              balance: 2500.00,
+            ListView.builder(
+              shrinkWrap: true, // Important to avoid unnecessary scroll
+              physics: const NeverScrollableScrollPhysics(), // Prevent list from scrolling
+              padding: const EdgeInsets.only(top: 10),
+              itemCount: context.watch<BalanceProvider>().cards.length,
+              itemBuilder: (context, index) {
+                final card = context.watch<BalanceProvider>().cards[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: CreditCard(
+                    cardTitle: card['title'],
+                    cardNumber: card['number'],
+                    balance: card['balance'],
+                  ),
+                );
+              },
             ),
-            const SizedBox(height: 15),
-            const CreditCard(
-              cardTitle: "Secondary Card",
-              cardNumber: "**** **** **** 5678",
-              balance: 700.75,
-            ),
-            const SizedBox(height: 20),
-            const Divider(thickness: 1.2), // Barre de séparation
             const SizedBox(height: 10),
+            const Divider(thickness: 1.5),
+            const SizedBox(height: 5),
             const Text(
               "Transactions",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            Expanded(child: TransactionList()),
+            const TransactionList(),
           ],
         ),
       ),
@@ -66,52 +72,53 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-
-// 📋 Liste des transactions
 class TransactionList extends StatelessWidget {
-  final List<TransactionItem> transactions = [
-    TransactionItem(name: "Starbucks", date: "Jan 25, 10:30 AM", amount: -5.75, icon: Icons.local_cafe),
-    TransactionItem(name: "Amazon Purchase", date: "Jan 24, 08:45 PM", amount: -150.00, icon: Icons.shopping_cart),
-    TransactionItem(name: "Salary", date: "Jan 23, 06:00 AM", amount: 3200.00, icon: Icons.account_balance_wallet),
-    TransactionItem(name: "Netflix", date: "Jan 22, 09:00 PM", amount: -13.99, icon: Icons.movie),
-  ];
-
-  TransactionList({super.key});
+  const TransactionList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: transactions.length,
-      separatorBuilder: (context, index) => const Divider(),
-      itemBuilder: (context, index) {
-        final transaction = transactions[index];
-        return ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.grey[300],
-            child: Icon(transaction.icon, color: Colors.black87),
-          ),
-          title: Text(transaction.name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          subtitle: Text(transaction.date, style: const TextStyle(color: Colors.grey)),
-          trailing: Text(
-            "\$${transaction.amount.toStringAsFixed(2)}",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: transaction.amount < 0 ? Colors.red : Colors.green,
+    return Consumer<TransactionProvider>(
+      builder: (context, transactionProvider, child) {
+        final transactions = transactionProvider.transactions;
+
+        if (transactions.isEmpty) {
+          return const Center(
+            child: Text(
+              "Aucune transaction pour le moment.",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
-          ),
+          );
+        }
+
+        return ListView.separated(
+          shrinkWrap: true, // Important to avoid unnecessary scroll
+          physics: const NeverScrollableScrollPhysics(), // Prevent list from scrolling
+          itemCount: transactions.length,
+          separatorBuilder: (context, index) => const Divider(),
+          itemBuilder: (context, index) {
+            final transaction = transactions[index];
+            return ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.grey[300],
+                child: Icon(transaction.icon, color: Colors.black87),
+              ),
+              title: Text(
+                transaction.name,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(transaction.date, style: const TextStyle(color: Colors.grey)),
+              trailing: Text(
+                "${transaction.amount < 0 ? '-' : '+'} \$${transaction.amount.abs().toStringAsFixed(2)}",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: transaction.amount < 0 ? Colors.red : Colors.green,
+                ),
+              ),
+            );
+          },
         );
       },
     );
   }
-}
-
-// 📝 Modèle de Transaction
-class TransactionItem {
-  final String name;
-  final String date;
-  final double amount;
-  final IconData icon;
-
-  TransactionItem({required this.name, required this.date, required this.amount, required this.icon});
 }

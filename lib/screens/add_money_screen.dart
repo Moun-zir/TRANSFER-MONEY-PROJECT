@@ -11,6 +11,7 @@ class AddMoneyScreen extends StatefulWidget {
 
 class _AddMoneyScreenState extends State<AddMoneyScreen> {
   String amount = "";
+  int selectedCardIndex = 0;
 
   void _onKeyPressed(String value) {
     setState(() {
@@ -26,15 +27,70 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final balanceProvider = Provider.of<BalanceProvider>(context);
+    final cards = balanceProvider.cards;
+
     return Scaffold(
       appBar: AppBar(title: const Text("Add Money")),
       body: Column(
         children: [
-          const SizedBox(height: 40),
-          const Text(
-            "Enter Amount",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          const SizedBox(height: 20),
+          SizedBox(
+            height: 150,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: cards.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedCardIndex = index;
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.all(12),
+                    width: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: selectedCardIndex == index ? Colors.blue : Colors.grey[300],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          cards[index]['title'],
+                          style: TextStyle(
+                            color: selectedCardIndex == index ? Colors.white : Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          cards[index]['number'],
+                          style: TextStyle(
+                            color: selectedCardIndex == index ? Colors.white : Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          "\$${cards[index]['balance'].toStringAsFixed(2)}",
+                          style: TextStyle(
+                            color: selectedCardIndex == index ? Colors.white : Colors.black,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
+          const SizedBox(height: 30),
+          const Text("Enter Amount", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
           Container(
             width: double.infinity,
@@ -45,10 +101,8 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
-              child: Text(
-                "\$${amount.isEmpty ? '0' : amount}",
-                style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-              ),
+              child: Text("\$${amount.isEmpty ? '0' : amount}",
+                  style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
             ),
           ),
           const SizedBox(height: 30),
@@ -61,10 +115,10 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
                 if (amount.isNotEmpty) {
                   double value = double.tryParse(amount) ?? 0;
                   if (value > 0) {
-                    Provider.of<BalanceProvider>(context, listen: false).addMoney(value);
+                    balanceProvider.addMoney(value, selectedCardIndex, context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(" ✅You are successfuly added \$${amount}"),
+                        content: Text("✅ Added \$${amount} to ${cards[selectedCardIndex]['title']}"),
                         backgroundColor: Colors.green,
                       ),
                     );
@@ -72,12 +126,6 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
                   }
                 }
               },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
               child: const Text("Send", style: TextStyle(fontSize: 18)),
             ),
           ),
@@ -98,7 +146,7 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
     return GridView.builder(
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 50),
-      itemCount: keys.length * 3,
+      itemCount: 12,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         mainAxisSpacing: 15,
@@ -112,15 +160,7 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
 
         return ElevatedButton(
           onPressed: () => _onKeyPressed(value),
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            padding: const EdgeInsets.all(15),
-            backgroundColor: Colors.grey[200],
-            foregroundColor: Colors.black,
-          ),
-          child: Text(value, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          child: Text(value, style: const TextStyle(fontSize: 22)),
         );
       },
     );

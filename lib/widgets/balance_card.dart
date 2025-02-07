@@ -46,7 +46,9 @@ class BalanceCard extends StatelessWidget {
 
                     const SizedBox(width: 20),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppRoutes.transferMoney);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white, 
                         foregroundColor: Colors.black, 

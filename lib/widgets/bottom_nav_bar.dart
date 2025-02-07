@@ -27,10 +27,10 @@ class BottomNavBar extends StatelessWidget {
           icon: Icon(Icons.notifications),
           label: 'Notifications',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Settings',
-        ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.settings),
+        //   label: 'Settings',
+        // ),
       ],
     );
   }

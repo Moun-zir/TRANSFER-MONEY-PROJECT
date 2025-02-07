@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:transfermoneyproject/screens/notifications_screen.dart';
 import 'screens/home_screen.dart';
 import 'routes/routes.dart';
-import 'screens/transactions_screen.dart';
-import 'screens/notifications_screen.dart';
-import 'screens/settings_screen.dart';
+// import 'screens/transactions_screen.dart';
+// import 'screens/notifications_screen.dart';
+// import 'screens/settings_screen.dart';
 import 'widgets/bottom_nav_bar.dart';
+// import 'providers/balance_provider.dart';
+import 'providers/transaction_provider.dart';
 import 'providers/balance_provider.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => TransactionProvider()),
         ChangeNotifierProvider(create: (context) => BalanceProvider()),
       ],
       child: const MyApp(),
@@ -50,8 +54,8 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
+    const NotificationScreen(),
     // const TransactionsScreen(),
-    // const NotificationsScreen(),
     // const SettingsScreen(),
   ];
 
