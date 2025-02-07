@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:provider/provider.dart';
 import 'package:transfermoneyproject/screens/notifications_screen.dart';
 import 'screens/home_screen.dart';
@@ -26,10 +27,22 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+=======
+import 'package:transfermoneyproject/login_page.dart';
+import 'package:transfermoneyproject/register_page.dart';
+import 'screens/accueil_screen.dart'; // Assure-toi d'importer la bonne page
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+>>>>>>> 6f019fbe24e51856080e97c5b6fab9a59eeadd58
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+<<<<<<< HEAD
       title: 'Money Transfer App',
       initialRoute: AppRoutes.home,
       onGenerateRoute: AppRoutes.generateRoute,
@@ -73,6 +86,15 @@ class _MainScreenState extends State<MainScreen> {
         selectedIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
+=======
+      initialRoute: '/', //(Page d'entrée , la page principale)
+      routes: {
+        '/':(context) => IntroScreen(),//Page d'introduction
+        '/register': (context) => RegisterPage(), //Page d'inscription
+        '/login': (context) => LoginPage(), //Page de connexion
+        // '/home':(context) => AccueilScreen()
+      },
+>>>>>>> 6f019fbe24e51856080e97c5b6fab9a59eeadd58
     );
   }
 }
