@@ -1,11 +1,11 @@
 class User {
-  final String email;
+  final String username; // Remplacer 'email' par 'username'
   final String password;
 
-  User({required this.email, required this.password});
+  User({required this.username, required this.password});
 }
 
 List<User> Users = [
-  User(email: 'user@gmail.com', password: '1234'),
-  User(email: 'admin@gmail.com', password: '1234'),
+  User(username: 'user', password: '1234'),
+  User(username: 'admin', password: '1234'),
 ];

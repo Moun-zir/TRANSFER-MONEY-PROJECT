@@ -14,10 +14,10 @@ class IntroScreenState extends State<IntroScreen> {
   // Liste des écrans d'introduction
   final List<Map<String, String>> pages = [
     {
-      "title": "Step into\nthe banking\nfuture now",
+      "title": "Welcome to the Future\nof Payments",
       "subtitle":
-          "We will do everything but count coins.\nFaster, easier, and more convenient.",
-      "image": "assets/images/anim2.jpg",
+          "Experience seamless, secure, and smart\npayments anywhere, anytime.",
+      "image": "assets/images/anim4.jpg",
     },
     {
       "title": "Secure &\nFast Payments",
@@ -27,7 +27,7 @@ class IntroScreenState extends State<IntroScreen> {
     {
       "title": "Manage Your\nFinances Easily",
       "subtitle": "Track your expenses and savings\nin one place.",
-      "image": "assets/images/anim4.jpg",
+      "image": "assets/images/anim1.jpg",
     }
   ];
 

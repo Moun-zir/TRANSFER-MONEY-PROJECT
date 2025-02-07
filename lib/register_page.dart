@@ -15,16 +15,14 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
-  String errorMessage = ''; // Message d'erreur pour la validation
+  String errorMessage = '';
 
-  // Fonction d'inscription
   void _register() {
     String username = _usernameController.text;
     String email = _emailController.text;
     String password = _passwordController.text;
     String confirmPassword = _confirmPasswordController.text;
 
-    // Validation des mots de passe
     if (password != confirmPassword) {
       setState(() {
         errorMessage = "Les mots de passe ne correspondent pas";
@@ -32,12 +30,10 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     }
 
-    // Ajoute ici la logique pour enregistrer l'utilisateur
-    // Exemple d'ajout d'un utilisateur (à ajuster selon ton backend)
+    // Logique d'enregistrement de l'utilisateur
     // User newUser = User(username: username, email: email, password: password);
     // SaveUser(newUser);
 
-    // Après l'inscription réussie, rediriger vers la page principale
     Navigator.pushNamed(context, '/home');
   }
 
@@ -45,25 +41,27 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.teal, // Couleur de l'AppBar en teal
+        title: const Text('Register', style: TextStyle(color: Colors.white)), // Couleur du titre
       ),
-      body: Center(  // Utilisation de Center pour centrer le contenu
+      body: Center(
         child: SizedBox(
-          width: 500,  // Limiter la largeur du formulaire
-          height: 980,  // Limiter la hauteur du formulaire
+          width: 500,
+          height: 980,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 1, 20, 20),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,  // Centrer la colonne verticalement
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
                   flex: 2,
                   child: Container(
                     margin: const EdgeInsets.fromLTRB(20, 45, 20, 45),
-                    padding: const EdgeInsets.fromLTRB(20, 80, 20, 50),
+                    padding: const EdgeInsets.fromLTRB(20, 40, 20, 50),
                     decoration: BoxDecoration(
+                      color: Colors.white, // Fond blanc pour le formulaire
                       border: Border.all(
-                        color: Colors.blue, // Changer la couleur de la bordure en bleu
+                        color: Colors.teal, // Bordure en teal
                         width: 5,
                       ),
                       borderRadius: BorderRadius.circular(15),
@@ -79,8 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 style: TextStyle(
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: "Roboto sans serif",
-                                  color: Colors.blue, // Bleu pour le titre
+                                  color: Colors.teal, // Couleur du titre en teal
                                 ),
                               ),
                               SizedBox(height: 20),
@@ -88,8 +85,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                 "Create your account",
                                 style: TextStyle(
                                   fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Roboto sans serif",
                                   color: Colors.grey,
                                 ),
                               )
@@ -103,25 +98,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: _usernameController,
                           decoration: InputDecoration(
                             labelText: 'Username',
-                            prefixIcon: const Icon(Icons.person, color: Colors.blue), // Icône en bleu
+                            prefixIcon: const Icon(Icons.person, color: Colors.teal), // Icône teal
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  color: Colors.blue, // Bordure bleu au focus
-                                  width: 2),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  color: Colors.grey, width: 2),
-                            ),
                             filled: true,
-                            fillColor: Colors.grey[100],
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 25),
+                            fillColor: Colors.grey[200], // Couleur de fond gris clair
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 25),
                           ),
                         ),
                         const SizedBox(height: 25),
@@ -131,25 +114,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           controller: _emailController,
                           decoration: InputDecoration(
                             labelText: 'Email',
-                            prefixIcon: const Icon(Icons.email, color: Colors.blue), // Icône en bleu
+                            prefixIcon: const Icon(Icons.email, color: Colors.teal), // Icône teal
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  color: Colors.blue, // Bordure bleu au focus
-                                  width: 2),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  color: Colors.grey, width: 2),
-                            ),
                             filled: true,
-                            fillColor: Colors.grey[100],
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 25),
+                            fillColor: Colors.grey[200],
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 25),
                           ),
                         ),
                         const SizedBox(height: 25),
@@ -160,25 +131,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           obscureText: true,
                           decoration: InputDecoration(
                             labelText: 'Password',
-                            prefixIcon: const Icon(Icons.lock, color: Colors.blue), // Icône en bleu
+                            prefixIcon: const Icon(Icons.lock, color: Colors.teal), // Icône teal
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  color: Colors.blue, // Bordure bleu au focus
-                                  width: 2),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  color: Colors.grey, width: 2),
-                            ),
                             filled: true,
-                            fillColor: Colors.grey[100],
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 25),
+                            fillColor: Colors.grey[200],
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 25),
                           ),
                         ),
                         const SizedBox(height: 25),
@@ -189,25 +148,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           obscureText: true,
                           decoration: InputDecoration(
                             labelText: 'Confirm Password',
-                            prefixIcon: const Icon(Icons.lock_outline, color: Colors.blue), // Icône en bleu
+                            prefixIcon: const Icon(Icons.lock_outline, color: Colors.teal), // Icône teal
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  color: Colors.blue, // Bordure bleu au focus
-                                  width: 2),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(
-                                  color: Colors.grey, width: 2),
-                            ),
                             filled: true,
-                            fillColor: Colors.grey[100],
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 25),
+                            fillColor: Colors.grey[200],
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 25),
                           ),
                         ),
                         const SizedBox(height: 25),
@@ -224,12 +171,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: ElevatedButton(
                             onPressed: _register,
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 40, vertical: 15),
+                              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              backgroundColor: Colors.blue, // Couleur du bouton en bleu
+                              backgroundColor: Colors.orange, // Couleur du bouton en orange
                             ),
                             child: const Text(
                               'Sign Up',
@@ -258,18 +204,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             onPressed: () {
                               // Logique pour connexion Google (à implémenter)
                             },
-                            icon: const Icon(Icons.g_translate, color: Colors.blue), // Icône en bleu
+                            icon: const Icon(Icons.g_translate, color: Colors.teal), // Icône teal
                             label: const Text(
                               'Sign Up with Google',
-                              style: TextStyle(fontSize: 16, color: Colors.blue), // Texte bleu
+                              style: TextStyle(fontSize: 16, color: Colors.teal), // Texte teal
                             ),
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 25, vertical: 20),
+                              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                                 side: const BorderSide(
-                                  color: Colors.blue, // Bordure bleu
+                                  color: Colors.teal, // Bordure teal
                                   width: 1,
                                 ),
                               ),
@@ -294,7 +239,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   TextSpan(
                                     text: "Sign in",
                                     style: TextStyle(
-                                      color: Colors.blueAccent,
+                                      color: Colors.orange, // Couleur du lien en orange
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),

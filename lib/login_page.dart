@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-// Assurez-vous d'avoir défini la classe `User` quelque part dans votre code ou l'importer correctement
 import 'package:transfermoneyproject/models/user.dart'; // Exemple d'importation pour User
 
 class LoginPage extends StatefulWidget {
@@ -12,29 +10,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // Liste des utilisateurs
   final List<User> users = List.from(Users); // Assurez-vous que `Users` est bien défini.
 
   String errorMessage = ''; // Message d'erreur en cas de mauvaise connexion
 
-  // Fonction de connexion
   void _login() {
-    String email = _emailController.text;
+    String username = _usernameController.text;
     String password = _passwordController.text;
 
     final user = users.firstWhere(
-      (user) => user.email == email && user.password == password,
-      orElse: () => User(email: '', password: ''),
+      (user) => user.username == username && user.password == password,
+      orElse: () => User(username: '', password: ''),
     );
 
-    if (user.email.isNotEmpty) {
-      // Connexion réussie, rediriger vers la Todo List ou autre écran
+    if (user.username.isNotEmpty) {
       Navigator.pushNamed(context, '/home');
     } else {
-      // Connexion échouée
       setState(() {
         errorMessage = 'Identifiants incorrects';
       });
@@ -45,34 +39,34 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0, // Pour enlever l'ombre de l'AppBar
+        backgroundColor: Colors.teal, // Couleur de l'AppBar en teal
+        title: const Text('Login', style: TextStyle(color: Colors.white)), // Couleur du titre
       ),
       body: Center(
         child: SizedBox(
-          width: 500, // Agrandissement de la taille du formulaire
-          height: 1100,
+          width: 500, // Taille du formulaire
+          height: 700,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 90),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center, // Centrer verticalement
               children: [
-                // Colonne pour le formulaire
                 Expanded(
                   flex: 2,
                   child: Container(
                     margin: const EdgeInsets.all(20),
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
+                      color: Colors.white, // Fond blanc pour le formulaire
                       border: Border.all(
-                        color: Colors.blue, // Changer le violet en bleu
+                        color: Colors.teal, // Bordure en teal
                         width: 5,
                       ),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch, // Étendre la colonne
                       children: [
-                        // Titre
                         const Center(
                           child: Text(
                             "WELCOME BACK",
@@ -80,28 +74,27 @@ class LoginPageState extends State<LoginPage> {
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
                               fontFamily: "Roboto sans serif",
-                              color: Colors.blue, // Changer le violet en bleu
+                              color: Colors.teal, // Couleur du titre en teal
                             ),
                           ),
                         ),
                         const SizedBox(height: 25),
 
-                        // Champ Email avec icône
+                        // Champ Username avec icône
                         TextField(
-                          controller: _emailController,
+                          controller: _usernameController,
                           decoration: InputDecoration(
-                            labelText: 'Email',
+                            labelText: 'Username',
                             prefixIcon: const Icon(
-                              Icons.email,
-                              color: Colors.blue, // Changer le violet en bleu
+                              Icons.account_circle,
+                              color: Colors.teal, // Icône teal
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
                             filled: true,
-                            fillColor: Colors.grey[100],
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 20),
+                            fillColor: Colors.grey[200], // Couleur de fond gris clair
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                           ),
                         ),
                         const SizedBox(height: 30),
@@ -114,37 +107,39 @@ class LoginPageState extends State<LoginPage> {
                             labelText: 'Mot de passe',
                             prefixIcon: const Icon(
                               Icons.lock,
-                              color: Colors.blue, // Changer le violet en bleu
+                              color: Colors.teal, // Icône teal
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
                             filled: true,
-                            fillColor: Colors.grey[100],
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 20),
+                            fillColor: Colors.grey[200],
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                           ),
                         ),
                         const SizedBox(height: 25),
 
                         // Message d'erreur
                         if (errorMessage.isNotEmpty)
-                          Text(
-                            errorMessage,
-                            style: const TextStyle(color: Colors.red),
+                          Center(
+                            child: Text(
+                              errorMessage,
+                              style: const TextStyle(color: Colors.red),
+                            ),
                           ),
+
+                        const SizedBox(height: 20), // Ajout d'un espacement
 
                         // Bouton de connexion
                         Center(
                           child: ElevatedButton(
                             onPressed: _login,
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 15),
+                              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              backgroundColor: Colors.blue, // Changer le violet en bleu
+                              backgroundColor: Colors.teal, // Couleur du bouton en teal
                             ),
                             child: const Text(
                               'Se connecter',
@@ -152,21 +147,22 @@ class LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 30),
+
+                        const SizedBox(height: 20), // Ajout d'un espacement
 
                         // Lien "Forget Password?"
                         const Center(
                           child: Text(
                             "Forget Password?",
                             style: TextStyle(
-                              color: Colors.blueAccent,
+                              color: Colors.pinkAccent, // Changer la couleur en rose
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
 
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 30), // Espacement avant le lien d'inscription
 
                         // Lien "Don't have an account? Sign up"
                         Center(
@@ -182,7 +178,7 @@ class LoginPageState extends State<LoginPage> {
                                   TextSpan(
                                     text: "Sign up",
                                     style: TextStyle(
-                                      color: Colors.blueAccent,
+                                      color: Colors.pinkAccent, // Changer la couleur en rose
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
