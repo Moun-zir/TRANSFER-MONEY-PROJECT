@@ -15,7 +15,8 @@ class IntroScreenState extends State<IntroScreen> {
   final List<Map<String, String>> pages = [
     {
       "title": "Step into\nthe banking\nfuture now",
-      "subtitle": "We will do everything but count coins.\nFaster, easier, and more convenient.",
+      "subtitle":
+          "We will do everything but count coins.\nFaster, easier, and more convenient.",
       "image": "assets/images/anim2.jpg",
     },
     {
@@ -49,7 +50,8 @@ class IntroScreenState extends State<IntroScreen> {
                 builder: (context, child) {
                   double pageOffset = 0;
                   // Sécurisation de l'accès à pageOffset
-                  if (_pageController.hasClients && _pageController.page != null) {
+                  if (_pageController.hasClients &&
+                      _pageController.page != null) {
                     pageOffset = _pageController.page! - index;
                   }
 
@@ -61,7 +63,8 @@ class IntroScreenState extends State<IntroScreen> {
                         child: Container(
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(pages[index]["image"] ?? 'assets/images/anim1.jpg'), // Image par défaut
+                              image: AssetImage(pages[index]["image"] ??
+                                  'assets/images/anim1.jpg'), // Image par défaut
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -69,7 +72,8 @@ class IntroScreenState extends State<IntroScreen> {
                       ),
                       // Content
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 50),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -102,7 +106,8 @@ class IntroScreenState extends State<IntroScreen> {
                               child: Opacity(
                                 opacity: (1 - pageOffset.abs()).clamp(0.0, 1.0),
                                 child: Text(
-                                  pages[index]["title"] ?? 'Default Title', // Titre par défaut
+                                  pages[index]["title"] ??
+                                      'Default Title', // Titre par défaut
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 32,
@@ -121,7 +126,8 @@ class IntroScreenState extends State<IntroScreen> {
                               child: Opacity(
                                 opacity: (1 - pageOffset.abs()).clamp(0.0, 1.0),
                                 child: Text(
-                                  pages[index]["subtitle"] ?? 'Default Subtitle', // Sous-titre par défaut
+                                  pages[index]["subtitle"] ??
+                                      'Default Subtitle', // Sous-titre par défaut
                                   style: TextStyle(
                                     color: Colors.white70,
                                     fontSize: 16,
@@ -137,7 +143,7 @@ class IntroScreenState extends State<IntroScreen> {
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  // Action when button is clicked
+                                  Navigator.pushNamed(context, '/register');
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white,
@@ -180,7 +186,8 @@ class IntroScreenState extends State<IntroScreen> {
                   width: _currentPage == index ? 12 : 8,
                   height: _currentPage == index ? 12 : 8,
                   decoration: BoxDecoration(
-                    color: _currentPage == index ? Colors.white : Colors.white54,
+                    color:
+                        _currentPage == index ? Colors.white : Colors.white54,
                     shape: BoxShape.circle,
                   ),
                 ),
