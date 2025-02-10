@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterPage(), //Page d'inscription
         '/login': (context) => LoginPage(), //Page de connexion
         // '/home':(context) => AccueilScreen()
+        
       },
     );
   }

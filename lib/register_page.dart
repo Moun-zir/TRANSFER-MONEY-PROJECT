@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transfermoneyproject/models/user.dart'; // Exemple d'importation pour User
 import 'login_page.dart'; // Assurez-vous que la page de connexion est correctement importée
-
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
