@@ -13,11 +13,15 @@ class TransferScreen extends StatefulWidget {
 class _TransferScreenState extends State<TransferScreen> {
   double amount = 0;
   String selectedUser = "";
+  int? selectedCardIndex; // Indice de la carte sélectionnée
 
   final List<Map<String, String>> users = [
-    {"name": "Alice", "avatar": "assets/images/imgpsh_fullsize_anim.jpg"},
-    {"name": "Bob", "avatar": "assets/images/imgpsh_fullsize_anim.jpg"},
-    {"name": "Charlie", "avatar": "assets/images/imgpsh_fullsize_anim.jpg"},
+    {"name": "Alice", "avatar": "assets/images/user1.jpg"},
+    {"name": "John", "avatar": "assets/images/user5.jpg"},
+    {"name": "Christiane", "avatar": "assets/images/user2.jpg"},
+    {"name": "Franck", "avatar": "assets/images/user6.jpg"},
+    {"name": "Marc", "avatar": "assets/images/user3.jpg"},
+    {"name": "Charlie", "avatar": "assets/images/user7.jpg"},
   ];
 
   final List<double> quickAmounts = [10, 20, 50, 100, 200];
@@ -37,44 +41,42 @@ class _TransferScreenState extends State<TransferScreen> {
     return;
   }
 
-  if (amount > balanceProvider.balance) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Solde insuffisant")));
+  if (selectedCardIndex == null) {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sélectionnez une carte bancaire")));
     return;
   }
 
-  // Déduire le montant du solde
-  balanceProvider.updateBalance(-amount);
+  double cardBalance = balanceProvider.cards[selectedCardIndex!]['balance'];
 
-  // Ajouter la transaction avec un montant négatif
-  transactionProvider.addTransaction(
-    name: "$selectedUser",
-    amount: -amount,
-    icon: Icons.arrow_upward,
-  );
+  if (amount > cardBalance) {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Solde insuffisant sur la carte")));
+    return;
+  }
 
+  // Déduire le montant du solde de la carte et du solde global
+  balanceProvider.transferMoney(amount, selectedCardIndex!, context);
 
-
-
-  // Ajouter la notification dans la liste des notifications
-  // Provider.of<TransactionProvider>(context, listen: false).addTransaction(
-  //   "Vous avez envoyé \$${amount.toStringAsFixed(2)} à $selectedUser il y a quelques minutes.",
-  // );
-
-  // Afficher une notification temporaire
+  // Ajouter la transaction "Transfert depuis" seulement, pas celle "Transfert à"
   ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text("Vous avez envoyé \$${amount.toStringAsFixed(2)} à $selectedUser")),
+    SnackBar(
+      content: Text("Vous avez envoyé \$${amount.toStringAsFixed(2)} à $selectedUser"),
+      backgroundColor: Colors.green,
+      ),
   );
 
-  // Réinitialiser le montant
+  // Réinitialiser les valeurs
   setState(() {
     amount = 0;
     selectedUser = "";
+    selectedCardIndex = null;
   });
 }
 
 
   @override
   Widget build(BuildContext context) {
+    final balanceProvider = Provider.of<BalanceProvider>(context);
+
     return Scaffold(
       appBar: AppBar(title: const Text("Transfert d'argent")),
       body: Padding(
@@ -84,8 +86,6 @@ class _TransferScreenState extends State<TransferScreen> {
           children: [
             const Text("Sélectionner un destinataire", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
-
-            // Liste horizontale des utilisateurs
             SizedBox(
               height: 100,
               child: ListView(
@@ -121,20 +121,31 @@ class _TransferScreenState extends State<TransferScreen> {
                 }).toList(),
               ),
             ),
-
-
+            const SizedBox(height: 20),
+            const Text("Sélectionner une carte bancaire", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            DropdownButton<int>(
+              value: selectedCardIndex,
+              hint: const Text("Choisir une carte"),
+              onChanged: (int? newValue) {
+                setState(() {
+                  selectedCardIndex = newValue;
+                });
+              },
+              items: balanceProvider.cards.asMap().entries.map((entry) {
+                int index = entry.key;
+                Map<String, dynamic> card = entry.value;
+                return DropdownMenuItem<int>(
+                  value: index,
+                  child: Text("${card['title']} - ${card['number']} (\$${card['balance'].toStringAsFixed(2)})"),
+                );
+              }).toList(),
+            ),
             const SizedBox(height: 20),
             const Text("Montant à envoyer", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-
-            // Affichage du montant sélectionné
             Center(
               child: Text("\$${amount.toStringAsFixed(2)}", style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
             ),
-
             const SizedBox(height: 20),
-
-            // Montants rapides
             Wrap(
               spacing: 10,
               children: quickAmounts.map((amt) {
@@ -144,9 +155,7 @@ class _TransferScreenState extends State<TransferScreen> {
                 );
               }).toList(),
             ),
-
             const SizedBox(height: 20),
-            const Text("Entrer un montant", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
 
             // Pavé numérique
             GridView.count(
@@ -178,8 +187,6 @@ class _TransferScreenState extends State<TransferScreen> {
             ),
 
             const SizedBox(height: 20),
-
-            // Bouton d'envoi
             Center(
               child: ElevatedButton(
                 onPressed: () => _sendMoney(context),

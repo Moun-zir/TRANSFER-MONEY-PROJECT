@@ -9,23 +9,24 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      backgroundColor: const Color.fromARGB(255, 245, 243, 243),
       currentIndex: selectedIndex,
       onTap: onTap,
       iconSize: 30,
       selectedItemColor: Colors.blue,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor: Colors.green,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.window),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.circle),
-          label: 'Transactions',
+          icon: Icon(Icons.notifications),
+          label: 'Notification',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
-          label: 'Notifications',
+          icon: Icon(Icons.account_balance_wallet),
+          label: 'Transaction',
         ),
         // BottomNavigationBarItem(
         //   icon: Icon(Icons.settings),

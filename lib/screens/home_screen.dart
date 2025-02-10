@@ -12,12 +12,12 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Mounzir Osseni"),
-        backgroundColor: const Color.fromARGB(255, 247, 246, 246),
+        title: const Text("Mounzir Osseni", style: TextStyle(color: Colors.white, fontFamily: "Roboto sans serif"),),
+        backgroundColor: const Color.fromARGB(255, 10, 10, 10),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16),
-            child: Icon(Icons.qr_code, size: 28),
+            child: Icon(Icons.qr_code, size: 28, color: Colors.white,),
           ),
         ],
       ),
@@ -28,8 +28,13 @@ class HomeScreen extends StatelessWidget {
           children: [
             const Center(
               child: Text(
-                "Balance",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                "BALANCE SOLDE",
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Roboto sans serif",
+                  color: Colors.green
+                  ),
               ),
             ),
             const SizedBox(height: 10),
@@ -38,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                 return BalanceCard(balance: balanceProvider.balance);
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             ListView.builder(
               shrinkWrap: true, // Important to avoid unnecessary scroll
               physics: const NeverScrollableScrollPhysics(), // Prevent list from scrolling
@@ -56,12 +61,12 @@ class HomeScreen extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             const Divider(thickness: 1.5),
             const SizedBox(height: 5),
             const Text(
-              "Transactions",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              "TRANSACTIONS",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green),
             ),
             const SizedBox(height: 10),
             const TransactionList(),
@@ -85,7 +90,7 @@ class TransactionList extends StatelessWidget {
           return const Center(
             child: Text(
               "Aucune transaction pour le moment.",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           );
         }
@@ -97,22 +102,52 @@ class TransactionList extends StatelessWidget {
           separatorBuilder: (context, index) => const Divider(),
           itemBuilder: (context, index) {
             final transaction = transactions[index];
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.grey[300],
-                child: Icon(transaction.icon, color: Colors.black87),
+
+            return Dismissible(
+              key: Key(transaction.name.toString()), // Unique key for each transaction
+              direction: DismissDirection.endToStart,
+              onDismissed: (direction) {
+                // Delete the transaction from the provider
+                transactionProvider.deleteTransaction(transaction.name);
+                
+                // Show a snack bar notification
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      "Transaction ${transaction.name} supprimée.",
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: Colors.redAccent,
+                  ),
+                );
+              },
+              background: Container(
+                color: Colors.redAccent,
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 20),
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                  size: 32,
+                ),
               ),
-              title: Text(
-                transaction.name,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(transaction.date, style: const TextStyle(color: Colors.grey)),
-              trailing: Text(
-                "${transaction.amount < 0 ? '-' : '+'} \$${transaction.amount.abs().toStringAsFixed(2)}",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: transaction.amount < 0 ? Colors.red : Colors.green,
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: Colors.grey[300],
+                  child: Icon(transaction.icon, color: Colors.black87),
+                ),
+                title: Text(
+                  transaction.name,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(transaction.date, style: const TextStyle(color: Colors.grey)),
+                trailing: Text(
+                  "${transaction.amount < 0 ? '-' : '+'} \$${transaction.amount.abs().toStringAsFixed(2)}",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: transaction.amount < 0 ? Colors.red : Colors.green,
+                  ),
                 ),
               ),
             );

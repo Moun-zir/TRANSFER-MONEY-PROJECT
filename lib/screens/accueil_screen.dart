@@ -82,6 +82,7 @@ class IntroScreenState extends State<IntroScreen> {
                               alignment: Alignment.topRight,
                               child: TextButton(
                                 onPressed: () {
+                                  Navigator.pushNamed(context, '/login');
                                   _pageController.animateToPage(
                                     pages.length - 1,
                                     duration: Duration(milliseconds: 500),

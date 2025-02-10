@@ -89,7 +89,7 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
               },
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 70),
           const Text("Enter Amount", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
           Container(
@@ -105,7 +105,7 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
                   style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 50),
           Expanded(child: _buildNumPad()),
           const SizedBox(height: 10),
           SizedBox(
@@ -126,7 +126,21 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
                   }
                 }
               },
-              child: const Text("Send", style: TextStyle(fontSize: 18)),
+               style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue, // Background color of the button
+                // minimumSize: Size(double.infinity, 100), // Button width and height
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // No round corners
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              ),
+              child: const Text("Send", 
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white, // Text color
+                fontWeight: FontWeight.bold, // Bold text
+                )
+              ),
             ),
           ),
           const SizedBox(height: 20),

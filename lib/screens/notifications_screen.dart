@@ -31,6 +31,15 @@ class NotificationScreen extends StatelessWidget {
               final transaction = transactions[index];
               final formattedDate = DateFormat('dd/MM/yyyy - HH:mm').format(DateTime.now());
 
+              String notificationMessage = '';
+              if (transaction.transactionType == TransactionType.addMoney) {
+                // Si c'est un ajout d'argent
+                notificationMessage = "Vous avez ajouté ${transaction.amount.toStringAsFixed(2)}€ dans votre carte.";
+              } else if (transaction.transactionType == TransactionType.transfer) {
+                // Si c'est un transfert d'argent
+                notificationMessage = "Vous avez transféré ${transaction.amount.toStringAsFixed(2)}€ à ${transaction.name}.";
+              }
+
               return Card(
                 elevation: 4,
                 margin: const EdgeInsets.symmetric(vertical: 8),
@@ -43,7 +52,7 @@ class NotificationScreen extends StatelessWidget {
                     child: const Icon(Icons.monetization_on, color: Colors.white),
                   ),
                   title: Text(
-                    "Vous avez envoyé ${transaction.amount.abs().toStringAsFixed(2)}€ à ${transaction.name}",
+                    notificationMessage,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text("📅 $formattedDate"),

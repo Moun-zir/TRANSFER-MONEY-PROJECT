@@ -133,7 +133,10 @@ class LoginPageState extends State<LoginPage> {
                         // Bouton de connexion
                         Center(
                           child: ElevatedButton(
-                            onPressed: _login,
+                            onPressed: () {
+                              // Logique de connexion réussie...
+                              Navigator.pushReplacementNamed(context, '/home'); // ✅ Remplace la page Login par Home
+                            },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                               shape: RoundedRectangleBorder(
